@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$page = $_GET['page'] ?? 'login'; // Por defecto, carga 'login'
+$page = $_GET['page'] ?? 'login'; // Por defecto, carga 'login' test git
 $public_pages = ['login', 'registro'];
 
 if (!isset($_SESSION['IDMiembro']) && !in_array($page, $public_pages)) {

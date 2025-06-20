@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   btn.addEventListener('click', function() {
     if(selectedPlan) {
-      window.location.href = 'inscripcion.php?plan=' + selectedPlan;
+      window.location.href = 'index.php?page=pagos&plan=' + selectedPlan;
     }
   });
 });

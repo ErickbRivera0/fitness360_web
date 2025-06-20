@@ -28,7 +28,9 @@ if (isset($_SESSION['IDMiembro'])) {
           <li><a href="index.php?page=servicios">Servicios</a></li>
           <li><a href="index.php?page=planes">Planes</a></li>
           <li><a href="index.php?page=contacto">Contacto</a></li>
-          <li><a href="index.php?page=miembros">Miembros</a></li>
+          <?php if ($isAdmin): ?>
+            <li><a href="index.php?page=miembros">Miembros</a></li>
+          <?php endif; ?>
           <li><a href="index.php?page=reservar">Reservar</a></li>
           <li><a href="index.php?page=historial">Historial</a></li>
           <li><a href="index.php?page=pagos">Pagos</a></li>

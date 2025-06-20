@@ -288,6 +288,11 @@ input[type="text"], input[type="number"] {
 }
 </style>
 
+<!-- Botón para ir directo a la información de pago -->
+<div style="text-align:center; margin-bottom:24px;">
+  <button type="button" class="next-btn" onclick="irAPago()">Ir a información de pago</button>
+</div>
+
 <!-- Wizard de Pagos -->
 <div class="wizard-container">
   <div class="wizard-steps">
@@ -345,6 +350,23 @@ input[type="text"], input[type="number"] {
           <input type="text" name="nombre_tarjeta" id="nombreTarjetaInput" maxlength="26" autocomplete="cc-name">
         </label>
       </div>
+      <div id="efectivoFields" style="display:none;">
+        <label>Monto a pagar (Efectivo)
+          <input type="number" name="monto_efectivo" min="1" step="0.01" placeholder="Ingrese el monto">
+        </label>
+      </div>
+      <div id="transferenciaFields" style="display:none;">
+        <label>Monto a transferir
+          <input type="number" name="monto_transferencia" min="1" step="0.01" placeholder="Ingrese el monto">
+        </label>
+        <div style="margin-top:10px;">
+          <strong>Datos para transferencia:</strong>
+          <div>Banco: Banco Atlantida</div>
+          <div>Cuenta: 7521425414</div>
+          <div>Nombre: Fitness360</div>
+          <div>Referencia: <?= htmlspecialchars($_SESSION['NombreCompleto'] ?? 'Tu nombre') ?></div>
+        </div>
+      </div>
       <div style="margin-top:32px;">
         <button type="button" class="back-btn" onclick="prevStep()">Atrás</button>
         <button type="submit" class="next-btn">Pagar</button>
@@ -368,6 +390,8 @@ function showStep(step) {
   if (step === 3) {
     const proveedor = document.querySelector('input[name="proveedor"]:checked');
     document.getElementById('tarjetaFields').style.display = (proveedor && proveedor.value === 'Tarjeta') ? 'block' : 'none';
+    document.getElementById('efectivoFields').style.display = (proveedor && proveedor.value === 'Efectivo') ? 'block' : 'none';
+    document.getElementById('transferenciaFields').style.display = (proveedor && proveedor.value === 'Transferencia') ? 'block' : 'none';
   }
 }
 function nextStep() {
@@ -383,9 +407,15 @@ function prevStep() {
   }
 }
 document.addEventListener('change', function(e) {
-  if (e.target.name === 'proveedor') showStep(3);
+  if (e.target.name === 'proveedor') mostrarCamposPago();
 });
+document.addEventListener('DOMContentLoaded', mostrarCamposPago);
 showStep(currentStep);
+
+function irAPago() {
+  currentStep = 3;
+  showStep(currentStep);
+}
 </script>
 
 <script>
@@ -429,6 +459,7 @@ cvvInput.addEventListener('input', function(e) {
 </script>
 
 <?php
+// --- Lógica de inserción de pago ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset($_POST['proveedor'])) {
     $tipo_pago = $_POST['tipo_pago'];
     $proveedor = $_POST['proveedor'];
@@ -438,7 +469,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     $nombre_tarjeta = $_POST['nombre_tarjeta'] ?? null;
 
     // Aquí tu lógica para calcular monto, descuentos, etc.
-    $monto = 1000; // Puedes calcular según tipo_pago
+    if ($proveedor === "Efectivo") {
+        $monto = isset($_POST['monto_efectivo']) ? floatval($_POST['monto_efectivo']) : 0;
+    } elseif ($proveedor === "Transferencia") {
+        $monto = isset($_POST['monto_transferencia']) ? floatval($_POST['monto_transferencia']) : 0;
+    } else {
+        $monto = 1000; // o el valor por defecto/tarjeta
+    }
 
     // Estado y transacción automáticos
     if ($proveedor === "Efectivo") {
@@ -457,11 +494,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     $stmt->execute();
     $stmt->close();
 
-    header('Location: index.php?page=pagos');
+    header('Location: index.php?page=pagos&exito=1');
     exit;
 }
 
-$isAdmin = (isset($_SESSION['Rol']) && $_SESSION['Rol'] === 'admin');
+// Ahora sí, incluye el header
+require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <?php if ($isAdmin): ?>
@@ -542,3 +580,40 @@ $isAdmin = (isset($_SESSION['Rol']) && $_SESSION['Rol'] === 'admin');
   </table>
 <?php endif; ?>
 <a href="index.php?page=admin_pagos" target="_blank" style="display:inline-block; margin-top:18px; background:#007b55; color:#fff; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:bold;">Ir a reportes</a>
+
+<?php if (isset($_GET['exito'])): ?>
+  <div id="mensajeExito" style="background:#e0f7ef; color:#007b55; padding:18px; border-radius:8px; margin:24px auto; max-width:600px; text-align:center; font-size:1.2rem;">
+    ¡Pago realizado con éxito!
+  </div>
+  <script>
+    setTimeout(function() {
+      document.getElementById('mensajeExito').style.display = 'none';
+    }, 4000);
+  </script>
+<?php endif; ?>
+
+<?php
+require_once __DIR__ . '/../includes/footer.php';
+$planSeleccionado = isset($_GET['plan']) ? $_GET['plan'] : '';
+?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var planSeleccionado = "<?= $planSeleccionado ?>";
+  if (planSeleccionado) {
+    // Selecciona automáticamente el radio del tipo de pago según el plan
+    var radio = document.querySelector('input[name="tipo_pago"][value="' + capitalize(planSeleccionado) + '"]');
+    if (radio) {
+      radio.checked = true;
+      // Avanza automáticamente al paso 2 (no selecciona método de pago)
+      currentStep = 2;
+      showStep(currentStep);
+    }
+  }
+
+  function capitalize(str) {
+    if (!str) return '';
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
+});
+</script>

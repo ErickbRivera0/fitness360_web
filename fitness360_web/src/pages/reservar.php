@@ -23,10 +23,10 @@ $result = $mysqli->query("SELECT IDClase, NombreClase, Horario FROM Clases");
 .reserva-container {
     max-width: 600px;
     margin: 30px auto;
-    background: #f8f9fa;
+    background:rgb(30, 32, 34);
     padding: 30px 40px;
     border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 12px rgb(5, 5, 5);
     font-family: Arial, sans-serif;
 }
 .reserva-container h2 {
@@ -49,7 +49,7 @@ $result = $mysqli->query("SELECT IDClase, NombreClase, Horario FROM Clases");
     color: #fff;
 }
 .reserva-table tr:hover {
-    background: #e9ecef;
+    background:rgb(0, 0, 0);
 }
 .reserva-select {
     width: 100%;

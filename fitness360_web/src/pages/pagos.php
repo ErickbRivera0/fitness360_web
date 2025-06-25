@@ -82,7 +82,7 @@ if ($isAdmin && isset($_GET['editar'])) {
     border: 1.5px solidrgb(12, 9, 9);
     border-radius: 8px;
     font-size: 1.08rem;
-    background: #fafbfc;
+    background:rgb(13, 13, 14);
     margin-top: 6px;
     transition: border 0.2s;
 }
@@ -117,7 +117,7 @@ if ($isAdmin && isset($_GET['editar'])) {
     margin-top: 24px;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.15);
 }
 .pagos-table th, .pagos-table td {
     padding: 16px 12px;
@@ -128,10 +128,10 @@ if ($isAdmin && isset($_GET['editar'])) {
     color: #222;
     font-weight: bold;
     font-size: 1.05rem;
-    border-bottom: 2px solid #e9ecef;
+    border-bottom: 2px solidrgb(18, 18, 19);
 }
 .pagos-table tr {
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solidrgb(22, 22, 22);
 }
 .pagos-table tr:last-child {
     border-bottom: none;
@@ -142,7 +142,7 @@ if ($isAdmin && isset($_GET['editar'])) {
     font-weight: 500;
 }
 .pagos-table tr:hover td {
-    background: #f7f7f7;
+    background:rgb(8, 8, 8);
 }
 .pagos-table .acciones a {
     color: #007b55;

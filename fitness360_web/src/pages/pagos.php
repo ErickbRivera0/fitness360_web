@@ -142,7 +142,7 @@ if ($isAdmin && isset($_GET['editar'])) {
     font-weight: 500;
 }
 .pagos-table tr:hover td {
-    background:rgb(8, 8, 8);
+    background:rgb(117, 199, 236);
 }
 .pagos-table .acciones a {
     color: #007b55;
@@ -498,9 +498,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     exit;
 }
 
-// Ahora sí, incluye el header
-require_once __DIR__ . '/../includes/header.php';
-?>
+// --- Lógica de redirección y procesamiento ---
+if ($isAdmin && isset($_GET['eliminar'])) {
+    // ...
+    header("Location: index.php?page=pagos");
+    exit;
+}
+// ...más lógica que use header()...
+
+require_once __DIR__ . '/../includes/header.php'; ?>
 
 <?php if ($isAdmin): ?>
   <div style="background:#e0f7ef; border:2px solid #007b55; border-radius:10px; padding:24px; margin:32px 0;">

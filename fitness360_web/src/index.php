@@ -9,7 +9,7 @@ if (!isset($_SESSION['IDMiembro']) && !in_array($page, $public_pages)) {
     exit;
 }
 
-$allowed_pages = ['home', 'servicios', 'planes', 'contacto', 'miembros', 'registro', 'login', 'reservar', 'historial', 'pagos','logout','admin_pagos'];
+$allowed_pages = ['home', 'servicios', 'planes', 'contacto', 'miembros', 'registro', 'login', 'reservar', 'historial', 'pagos', 'logout', 'admin_pagos', 'historial_registros'];
 
 // Solo incluye header/footer si NO es login ni registro
 if (!in_array($page, $public_pages)) {
@@ -18,8 +18,14 @@ if (!in_array($page, $public_pages)) {
 
 if (in_array($page, $allowed_pages)) {
     include "pages/$page.php";
-} else {
-    echo "<h2>Página no encontrada </h2>";
+}
+
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+    if ($page == 'historial_registros') {
+        include 'src/pages/historial_registros.php';
+    }
+    // ...otros includes...
 }
 
 if (!in_array($page, $public_pages)) {

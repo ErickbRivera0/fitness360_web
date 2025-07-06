@@ -305,12 +305,17 @@ input[type="text"], input[type="number"] {
   <form id="pagosWizardForm" method="post" action="">
     <!-- Paso 1 -->
     <div class="wizard-step" id="step1">
-      <h3>Seleccionar el tipo de pago</h3>
+      <h3 style="color:black; text-align:center;">Seleccionar el tipo de pago</h3>
       <div class="wizard-options">
-        <label><input type="radio" name="tipo_pago" value="Matrícula" required> Matrícula</label>
-        <label><input type="radio" name="tipo_pago" value="Cuotas"> Cuotas</label>
-        <label><input type="radio" name="tipo_pago" value="Reserva"> Reserva</label>
-        <label><input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+          <input type="radio" name="tipo_pago" value="Matrícula" required> Matrícula
+        </label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+          <input type="radio" name="tipo_pago" value="Cuotas"> Cuotas</label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+        <input type="radio" name="tipo_pago" value="Reserva"> Reserva</label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+        <input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
       </div>
       <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
     </div>
@@ -329,7 +334,7 @@ input[type="text"], input[type="number"] {
     </div>
     <!-- Paso 3 -->
     <div class="wizard-step" id="step3" style="display:none;">
-      <h3>Información de pago</h3>
+      <h3 style="color:black";>Información de pago</h3>
       <div id="tarjetaFields" style="display:none;">
         <div class="card-preview" id="cardPreview">
           <div class="chip"></div>

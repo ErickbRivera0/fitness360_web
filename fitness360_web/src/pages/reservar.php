@@ -31,7 +31,7 @@ $result = $mysqli->query("SELECT IDClase, NombreClase, Horario FROM Clases");
 }
 .reserva-container h2 {
     text-align: center;
-    color: #333;
+    color: #fff;
     margin-bottom: 24px;
 }
 .reserva-table {

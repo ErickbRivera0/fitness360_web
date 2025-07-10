@@ -1,9 +1,9 @@
 <?php
-$host = 'switchback.proxy.rlwy.net';
-$port = 16032;
+$host = 'tramway.proxy.rlwy.net';
+$port = 41615;
 $db   = 'fitness360';
 $user = 'root';
-$pass = 'JWjKAeEeGIkWRYzAdOmEhPqkFnUoKsKn'; // pon aquí la contraseña real
+$pass = 'pzrbJzPSKtWnwWVdNEGyCKKGSqlYhMvR'; // pon aquí la contraseña real
 $charset = 'utf8mb4';
 
 // Crear conexión mysqli

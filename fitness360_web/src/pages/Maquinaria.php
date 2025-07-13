@@ -1,51 +1,60 @@
-<?php
-require_once __DIR__ . '/../includes/conexion.php';
-if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] !== 'admin') {
-    header("Location: index.php?page=home");
-    exit;
-}
-?>
-<style>
-.miembros-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-}
-.miembros-table th, .miembros-table td {
-    border: 1px solid #ddd;
-    padding: 12px 8px;
-    font-weight: bold;
-    color: #222;
-    background: #fff;
-}
-.miembros-table th {
-    background: #f5f5f5;
-    color: #222;
-}
-.miembros-table tr:hover {
-    background-color: #e9ecef;
-}
-</style>
-
-<h2>Miembros</h2>
-<table class="miembros-table">
-    <thead>
-        <tr>
-            <th>Nombre Completo</th>
-            <th>Correo Electrónico</th>
-            <th>Número Teléfono</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        $data = obtenerMiembros();
-        foreach ($data as $row) {
-            echo "<tr>
-                    <td>{$row['NombreCompleto']}</td>
-                    <td>{$row['CorreoElectronico']}</td>
-                    <td>{$row['NumeroTelefono']}</td>
-                  </tr>";
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Maquinaria</title>
+    <style>
+        form {
+            max-width: 400px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 24px;
         }
-        ?>
-    </tbody>
-</table>
+        label {
+            display: block;
+            margin-top: 12px;
+            color: #111;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin-top: 18px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center;">Agregar Maquinaria</h2>
+    <form method="POST" action="">
+        <label for="serie">Serie de la máquina:</label>
+        <input type="text" name="serie" id="serie" required>
+
+        <label for="estado">Estado:</label>
+        <select name="estado" id="estado" required>
+            <option value="">Seleccione...</option>
+            <option value="Nueva">Nueva</option>
+            <option value="Usada">Usada</option>
+        </select>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea name="descripcion" id="descripcion" rows="2" required></textarea>
+
+        <label for="caracteristicas">Características:</label>
+        <textarea name="caracteristicas" id="caracteristicas" rows="3"></textarea>
+
+        <button type="submit">Agregar Maquinaria</button>
+    </form>
+</body>
+</html>

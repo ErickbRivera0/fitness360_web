@@ -46,6 +46,9 @@ if ($isAdmin && isset($_GET['editar'])) {
 ?>
 
 <style>
+body, .pagos-section, .pagos-form, .pagos-table, .wizard-container, .wizard-step, .wizard-options, label, input, select, textarea, button, th, td, h1, h2, h3, h4, h5, h6, p, span, div {
+    color: #111 !important;
+}
 .pagos-section {
     max-width: 900px;
     margin: 32px auto;
@@ -332,19 +335,23 @@ input[type="text"], input[type="number"] {
     </div>
     <!-- Paso 3 -->
     <div class="wizard-step" id="step3" style="display:none;">
-      <h3 style="color:black";>Información de pago</h3>
+      <h3 style="color:black;">Información de pago</h3>
       <div id="tarjetaFields" style="display:none;">
         <div class="card-preview" id="cardPreview">
           <div class="chip"></div>
           <div class="card-number" id="cardNumberPreview">•••• •••• •••• ••••</div>
           <div class="card-name" id="cardNamePreview">SU NOMBRE AQUÍ</div>
           <div class="card-exp" id="cardExpPreview">MM/AA</div>
+          <div style="position:absolute; top:18px; right:24px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style="height:24px;vertical-align:middle;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" style="height:24px;vertical-align:middle;">
+          </div>
         </div>
         <label>Número de tarjeta
-          <input type="text" name="tarjeta" id="tarjetaInput" maxlength="19" placeholder="•••• •••• •••• ••••" autocomplete="cc-number" inputmode="numeric" pattern="\d{16}">
+          <input type="text" name="tarjeta" id="tarjetaInput" maxlength="19" placeholder="•••• •••• •••• ••••" autocomplete="cc-number" inputmode="numeric" pattern="(\d{4} ?){3}\d{4}|\d{4} ?\d{6} ?\d{5}">
         </label>
-        <label>Fecha Exp
-          <input type="month" name="exp" id="expInput" min="<?= date('Y-m'); ?>" placeholder="mm/yyyy" autocomplete="cc-exp">
+        <label>Fecha Expiración
+          <input type="text" name="exp" id="expInput" maxlength="5" placeholder="MM/AA" autocomplete="cc-exp" pattern="^(0[1-9]|1[0-2])\/\d{2}$">
         </label>
         <label>CVV
           <input type="text" name="cvv" id="cvvInput" maxlength="4" placeholder="123" autocomplete="cc-csc" inputmode="numeric" pattern="\d{3,4}">
@@ -426,12 +433,18 @@ function irAPago() {
 const tarjetaInput = document.getElementById('tarjetaInput');
 const cardNumberPreview = document.getElementById('cardNumberPreview');
 tarjetaInput.addEventListener('input', function(e) {
-  // Solo números, máximo 16 dígitos
-  let value = e.target.value.replace(/\D/g, '').slice(0,16);
-  // Formato #### #### #### ####
-  let formatted = value.replace(/(.{4})/g, '$1 ').trim();
-  e.target.value = formatted;
-  cardNumberPreview.textContent = formatted.padEnd(19, '•');
+  let value = e.target.value.replace(/\D/g, '').slice(0,16); // Cambia a 15 si quieres solo Amex, o 16 para Visa/Mastercard
+  if (value.length === 15) {
+    // Formato Amex: 4-6-5
+    value = value.replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, function(_, g1, g2, g3) {
+      return [g1, g2, g3].filter(Boolean).join(' ');
+    });
+  } else {
+    // Formato estándar: 4-4-4-4
+    value = value.replace(/(.{4})/g, '$1 ').trim();
+  }
+  e.target.value = value;
+  cardNumberPreview.textContent = value.padEnd(19, '•');
 });
 
 // Reflejar nombre en la tarjeta
@@ -442,16 +455,17 @@ nombreTarjetaInput.addEventListener('input', function(e) {
   cardNamePreview.textContent = value || 'SU NOMBRE AQUÍ';
 });
 
-// Reflejar fecha de expiración en la tarjeta
+// Corregir el campo de mes/año a formato MM/AA
 const expInput = document.getElementById('expInput');
 const cardExpPreview = document.getElementById('cardExpPreview');
 expInput.addEventListener('input', function(e) {
-  if (e.target.value) {
-    let [year, month] = e.target.value.split('-');
-    cardExpPreview.textContent = `${month}/${year.slice(-2)}`;
-  } else {
-    cardExpPreview.textContent = 'MM/AA';
+  let value = e.target.value.replace(/\D/g, '');
+  if (value.length > 4) value = value.slice(0,4);
+  if (value.length >= 3) {
+    value = value.slice(0,2) + '/' + value.slice(2,4);
   }
+  e.target.value = value;
+  cardExpPreview.textContent = value || 'MM/AA';
 });
 
 // Limitar CVV a 4 dígitos numéricos
@@ -609,12 +623,15 @@ $planSeleccionado = isset($_GET['plan']) ? $_GET['plan'] : '';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var planSeleccionado = "<?= $planSeleccionado ?>";
-  if (planSeleccionado) {
-    // Selecciona automáticamente el radio del tipo de pago según el plan
+  // Si el plan es basico, premium o platinum, avanzar automáticamente al paso 2
+  if (['basico', 'premium', 'platinum'].includes(planSeleccionado.toLowerCase())) {
+    currentStep = 2;
+    showStep(currentStep);
+  } else if (planSeleccionado) {
+    // Si es otro tipo de pago, intenta seleccionar el radio y avanzar
     var radio = document.querySelector('input[name="tipo_pago"][value="' + capitalize(planSeleccionado) + '"]');
     if (radio) {
       radio.checked = true;
-      // Avanza automáticamente al paso 2 (no selecciona método de pago)
       currentStep = 2;
       showStep(currentStep);
     }

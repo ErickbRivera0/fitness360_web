@@ -288,10 +288,6 @@ input[type="text"], input[type="number"] {
 }
 </style>
 
-<!-- Botón para ir directo a la información de pago -->
-<div style="text-align:center; margin-bottom:24px;">
-  <button type="button" class="next-btn" onclick="irAPago()">Ir a información de pago</button>
-</div>
 
 <!-- Wizard de Pagos -->
 <div class="wizard-container">
@@ -317,7 +313,9 @@ input[type="text"], input[type="number"] {
         <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
         <input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
       </div>
-      <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
+      <div style="text-align:center; margin-top:32px;">
+        <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
+      </div>
     </div>
     <!-- Paso 2 -->
     <div class="wizard-step" id="step2" style="display:none;">
@@ -590,7 +588,7 @@ require_once __DIR__ . '/../includes/header.php'; ?>
     <?php endwhile; ?>
   </table>
 <?php endif; ?>
-<a href="index.php?page=admin_pagos" target="_blank" style="display:inline-block; margin-top:18px; background:#007b55; color:#fff; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:bold;">Ir a reportes</a>
+
 
 <?php if (isset($_GET['exito'])): ?>
   <div id="mensajeExito" style="background:#e0f7ef; color:#007b55; padding:18px; border-radius:8px; margin:24px auto; max-width:600px; text-align:center; font-size:1.2rem;">

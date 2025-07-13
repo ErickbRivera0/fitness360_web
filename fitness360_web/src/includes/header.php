@@ -30,6 +30,7 @@ if (isset($_SESSION['IDMiembro'])) {
           <li><a href="index.php?page=contacto">Contacto</a></li>
           <?php if ($isAdmin): ?>
             <li><a href="index.php?page=miembros">Miembros</a></li>
+          <li><a href="index.php?page=maquinaria">Maquinaria</a></li>
           <?php endif; ?>
           <li><a href="index.php?page=reservar">Reservar</a></li>
           <li><a href="index.php?page=historial">Asistencias</a></li>

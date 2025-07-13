@@ -5,15 +5,18 @@
       <tr>
         <th></th>
         <th class="plan plan-highlight" data-plan="basico">
-          <img src="img/plan-basico.jpg" alt="Plan Básico"><br>
+          <img src="https://img.freepik.com/premium-vector/editable-ic…entation-website-mobile-app_9028-17393.jpg" 
+          alt="Pesas Rusas Icono" style="width:40px;height:40px;"><br>
           Plan Básico
         </th>
         <th class="plan" data-plan="premium">
-          <img src="img/plan-premium.jpg" alt="Plan Premium"><br>
+          <img src="https://img.freepik.com/premium-vector/dumbbell-ic…ign-template-simple-clean_1309366-2879.jpg" 
+          alt="Pesas Rusas Icono" style="width:40px;height:40px;"><br>
           Plan Premium
         </th>
         <th class="plan" data-plan="platinum">
-          <img src="img/plan-platinum.jpg" alt="Plan Platinum"><br>
+          <img src="	https://img.freepik.com/premium-vector/dumbbells-i…n-isolated-white-background_96318-66879.jpg" 
+          alt="Pesas Rusas Icono" style="width:40px;height:40px;"><br>
           Plan Platinum
         </th>
       </tr>
@@ -59,35 +62,6 @@
     </div>
   </div>
 </section>
+  </div>
+</section>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  let selectedPlan = null;
-  const table = document.getElementById('tabla-planes');
-  const btn = document.getElementById('btn-inscribirse');
-
-  // Selecciona la columna al hacer click en el encabezado
-  table.querySelectorAll('th[data-plan]').forEach((th, idx) => {
-    th.addEventListener('click', function() {
-      // Quitar selección previa
-      table.querySelectorAll('th[data-plan], td[data-plan]').forEach(cell => {
-        cell.classList.remove('selected-plan');
-      });
-      // Seleccionar columna
-      const plan = th.getAttribute('data-plan');
-      selectedPlan = plan;
-      btn.disabled = false;
-      // Selecciona th y todos los td de esa columna
-      table.querySelectorAll('th[data-plan="'+plan+'"], td[data-plan="'+plan+'"]').forEach(cell => {
-        cell.classList.add('selected-plan');
-      });
-    });
-  });
-
-  btn.addEventListener('click', function() {
-    if(selectedPlan) {
-      window.location.href = 'index.php?page=pagos&plan=' + selectedPlan;
-    }
-  });
-});
-</script>

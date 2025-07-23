@@ -1,18 +1,18 @@
 <section class="features">
   <div class="container">
     <h2>Nuestros Servicios</h2>
-    <div class="features-grid">
+    <div class="features-grid" style="display: flex; flex-direction: row; gap: 28px; justify-content: center; flex-wrap: nowrap;">
       <div class="feature-card" onclick="mostrarDetalle('entrenamiento')">
-        <h3>Entrenamiento Personalizado</h3>
-        <p>Diseñado para ti y tus metas.</p>
+      <h3>Entrenamiento Personalizado</h3>
+      <p>Diseñado para ti y tus metas.</p>
       </div>
       <div class="feature-card" onclick="mostrarDetalle('nutricion')">
-        <h3>Nutrición Profesional</h3>
-        <p>Asesoría en dietas y hábitos saludables.</p>
+      <h3>Nutrición Profesional</h3>
+      <p>Asesoría en dietas y hábitos saludables.</p>
       </div>
       <div class="feature-card" onclick="mostrarDetalle('seguimiento')">
-        <h3>Seguimiento y Motivación</h3>
-        <p>Monitoreo de tu progreso y apoyo constante.</p>
+      <h3>Seguimiento y Motivación</h3>
+      <p>Monitoreo de tu progreso y apoyo constante.</p>
       </div>
     </div>
     <div id="detalle-servicio" class="detalle-servicio" style="display:none;">

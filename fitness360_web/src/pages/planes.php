@@ -1,19 +1,29 @@
+
+<style>
+.selected-plan {
+  border: 2px solid #007bff !important;
+  background: #e6f0ff !important;
+}
+</style>
+
 <section>
   <div class="container">
     <h2>Elige tu plan</h2>
     <table class="features-table" id="tabla-planes">
-      <tr>
-        <th></th>
+      <th></th>
         <th class="plan plan-highlight" data-plan="basico">
-          <img src="img/plan-basico.jpg" alt="Plan Básico"><br>
+          <img src="https://img.freepik.com/premium-vector/editable-ic…entation-website-mobile-app_9028-17393.jpg" 
+          alt="Pesas Rusas Icono" style="width:40px;height:40px;"><br>
           Plan Básico
         </th>
         <th class="plan" data-plan="premium">
-          <img src="img/plan-premium.jpg" alt="Plan Premium"><br>
+          <img src="https://img.freepik.com/premium-vector/dumbbell-ic…ign-template-simple-clean_1309366-2879.jpg" 
+          alt="Pesas Rusas Icono" style="width:40px;height:40px;"><br>
           Plan Premium
         </th>
         <th class="plan" data-plan="platinum">
-          <img src="img/plan-platinum.jpg" alt="Plan Platinum"><br>
+          <img src="	https://img.freepik.com/premium-vector/dumbbells-i…n-isolated-white-background_96318-66879.jpg" 
+          alt="Pesas Rusas Icono" style="width:40px;height:40px;"><br>
           Plan Platinum
         </th>
       </tr>
@@ -38,13 +48,13 @@
       <tr>
         <td>Dieta personalizada</td>
         <td data-plan="basico" class="plan-highlight"><span class="cross">&#10007;</span></td>
-        <td data-plan="premium"><span class="check">&#10003;</span></td>
+        <td data-plan="premium"><span class="cross">&#10007;</span></td>
         <td data-plan="platinum"><span class="check">&#10003;</span></td>
       </tr>
       <tr>
         <td>App móvil</td>
         <td data-plan="basico" class="plan-highlight"><span class="cross">&#10007;</span></td>
-        <td data-plan="premium"><span class="check">&#10003;</span></td>
+        <td data-plan="premium"><span class="cross">&#10007;</span></td>
         <td data-plan="platinum"><span class="check">&#10003;</span></td>
       </tr>
       <tr>
@@ -67,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const btn = document.getElementById('btn-inscribirse');
 
   // Selecciona la columna al hacer click en el encabezado
-  table.querySelectorAll('th[data-plan]').forEach((th, idx) => {
+  table.querySelectorAll('th[data-plan]').forEach((th) => {
     th.addEventListener('click', function() {
       // Quitar selección previa
       table.querySelectorAll('th[data-plan], td[data-plan]').forEach(cell => {
@@ -86,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   btn.addEventListener('click', function() {
     if(selectedPlan) {
-      window.location.href = 'index.php?page=pagos&plan=' + selectedPlan;
+      // Redirige a la página de pagos y luego a matrícula
+      window.location.href = 'index.php?page=pagos&plan=' + selectedPlan + '&goto=matricula';
     }
   });
 });

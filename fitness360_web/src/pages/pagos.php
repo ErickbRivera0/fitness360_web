@@ -46,6 +46,9 @@ if ($isAdmin && isset($_GET['editar'])) {
 ?>
 
 <style>
+body, .pagos-section, .pagos-form, .pagos-table, .wizard-container, .wizard-step, .wizard-options, label, input, select, textarea, button, th, td, h1, h2, h3, h4, h5, h6, p, span, div {
+    color: #111 !important;
+}
 .pagos-section {
     max-width: 900px;
     margin: 32px auto;
@@ -142,7 +145,7 @@ if ($isAdmin && isset($_GET['editar'])) {
     font-weight: 500;
 }
 .pagos-table tr:hover td {
-    background:rgb(8, 8, 8);
+    background:rgb(117, 199, 236);
 }
 .pagos-table .acciones a {
     color: #007b55;
@@ -288,10 +291,6 @@ input[type="text"], input[type="number"] {
 }
 </style>
 
-<!-- Botón para ir directo a la información de pago -->
-<div style="text-align:center; margin-bottom:24px;">
-  <button type="button" class="next-btn" onclick="irAPago()">Ir a información de pago</button>
-</div>
 
 <!-- Wizard de Pagos -->
 <div class="wizard-container">
@@ -305,14 +304,21 @@ input[type="text"], input[type="number"] {
   <form id="pagosWizardForm" method="post" action="">
     <!-- Paso 1 -->
     <div class="wizard-step" id="step1">
-      <h3>Seleccionar el tipo de pago</h3>
+      <h3 style="color:black; text-align:center;">Seleccionar el tipo de pago</h3>
       <div class="wizard-options">
-        <label><input type="radio" name="tipo_pago" value="Matrícula" required> Matrícula</label>
-        <label><input type="radio" name="tipo_pago" value="Cuotas"> Cuotas</label>
-        <label><input type="radio" name="tipo_pago" value="Reserva"> Reserva</label>
-        <label><input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+          <input type="radio" name="tipo_pago" value="Matrícula" required> Matrícula
+        </label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+          <input type="radio" name="tipo_pago" value="Cuotas"> Cuotas</label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+        <input type="radio" name="tipo_pago" value="Reserva"> Reserva</label>
+        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+        <input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
       </div>
-      <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
+      <div style="text-align:center; margin-top:32px;">
+        <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
+      </div>
     </div>
     <!-- Paso 2 -->
     <div class="wizard-step" id="step2" style="display:none;">
@@ -329,19 +335,23 @@ input[type="text"], input[type="number"] {
     </div>
     <!-- Paso 3 -->
     <div class="wizard-step" id="step3" style="display:none;">
-      <h3>Información de pago</h3>
+      <h3 style="color:black;">Información de pago</h3>
       <div id="tarjetaFields" style="display:none;">
         <div class="card-preview" id="cardPreview">
           <div class="chip"></div>
           <div class="card-number" id="cardNumberPreview">•••• •••• •••• ••••</div>
           <div class="card-name" id="cardNamePreview">SU NOMBRE AQUÍ</div>
           <div class="card-exp" id="cardExpPreview">MM/AA</div>
+          <div style="position:absolute; top:18px; right:24px;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style="height:24px;vertical-align:middle;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" style="height:24px;vertical-align:middle;">
+          </div>
         </div>
         <label>Número de tarjeta
-          <input type="text" name="tarjeta" id="tarjetaInput" maxlength="19" placeholder="•••• •••• •••• ••••" autocomplete="cc-number" inputmode="numeric" pattern="\d{16}">
+          <input type="text" name="tarjeta" id="tarjetaInput" maxlength="19" placeholder="•••• •••• •••• ••••" autocomplete="cc-number" inputmode="numeric" pattern="(\d{4} ?){3}\d{4}|\d{4} ?\d{6} ?\d{5}">
         </label>
-        <label>Fecha Exp
-          <input type="month" name="exp" id="expInput" min="<?= date('Y-m'); ?>" placeholder="mm/yyyy" autocomplete="cc-exp">
+        <label>Fecha Expiración
+          <input type="text" name="exp" id="expInput" maxlength="5" placeholder="MM/AA" autocomplete="cc-exp" pattern="^(0[1-9]|1[0-2])\/\d{2}$">
         </label>
         <label>CVV
           <input type="text" name="cvv" id="cvvInput" maxlength="4" placeholder="123" autocomplete="cc-csc" inputmode="numeric" pattern="\d{3,4}">
@@ -423,12 +433,18 @@ function irAPago() {
 const tarjetaInput = document.getElementById('tarjetaInput');
 const cardNumberPreview = document.getElementById('cardNumberPreview');
 tarjetaInput.addEventListener('input', function(e) {
-  // Solo números, máximo 16 dígitos
-  let value = e.target.value.replace(/\D/g, '').slice(0,16);
-  // Formato #### #### #### ####
-  let formatted = value.replace(/(.{4})/g, '$1 ').trim();
-  e.target.value = formatted;
-  cardNumberPreview.textContent = formatted.padEnd(19, '•');
+  let value = e.target.value.replace(/\D/g, '').slice(0,16); // Cambia a 15 si quieres solo Amex, o 16 para Visa/Mastercard
+  if (value.length === 15) {
+    // Formato Amex: 4-6-5
+    value = value.replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, function(_, g1, g2, g3) {
+      return [g1, g2, g3].filter(Boolean).join(' ');
+    });
+  } else {
+    // Formato estándar: 4-4-4-4
+    value = value.replace(/(.{4})/g, '$1 ').trim();
+  }
+  e.target.value = value;
+  cardNumberPreview.textContent = value.padEnd(19, '•');
 });
 
 // Reflejar nombre en la tarjeta
@@ -439,16 +455,17 @@ nombreTarjetaInput.addEventListener('input', function(e) {
   cardNamePreview.textContent = value || 'SU NOMBRE AQUÍ';
 });
 
-// Reflejar fecha de expiración en la tarjeta
+// Corregir el campo de mes/año a formato MM/AA
 const expInput = document.getElementById('expInput');
 const cardExpPreview = document.getElementById('cardExpPreview');
 expInput.addEventListener('input', function(e) {
-  if (e.target.value) {
-    let [year, month] = e.target.value.split('-');
-    cardExpPreview.textContent = `${month}/${year.slice(-2)}`;
-  } else {
-    cardExpPreview.textContent = 'MM/AA';
+  let value = e.target.value.replace(/\D/g, '');
+  if (value.length > 4) value = value.slice(0,4);
+  if (value.length >= 3) {
+    value = value.slice(0,2) + '/' + value.slice(2,4);
   }
+  e.target.value = value;
+  cardExpPreview.textContent = value || 'MM/AA';
 });
 
 // Limitar CVV a 4 dígitos numéricos
@@ -498,9 +515,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     exit;
 }
 
-// Ahora sí, incluye el header
-require_once __DIR__ . '/../includes/header.php';
-?>
+// --- Lógica de redirección y procesamiento ---
+if ($isAdmin && isset($_GET['eliminar'])) {
+    // ...
+    header("Location: index.php?page=pagos");
+    exit;
+}
+// ...más lógica que use header()...
+
+require_once __DIR__ . '/../includes/header.php'; ?>
 
 <?php if ($isAdmin): ?>
   <div style="background:#e0f7ef; border:2px solid #007b55; border-radius:10px; padding:24px; margin:32px 0;">
@@ -579,7 +602,7 @@ require_once __DIR__ . '/../includes/header.php';
     <?php endwhile; ?>
   </table>
 <?php endif; ?>
-<a href="index.php?page=admin_pagos" target="_blank" style="display:inline-block; margin-top:18px; background:#007b55; color:#fff; padding:12px 28px; border-radius:8px; text-decoration:none; font-weight:bold;">Ir a reportes</a>
+
 
 <?php if (isset($_GET['exito'])): ?>
   <div id="mensajeExito" style="background:#e0f7ef; color:#007b55; padding:18px; border-radius:8px; margin:24px auto; max-width:600px; text-align:center; font-size:1.2rem;">
@@ -600,12 +623,15 @@ $planSeleccionado = isset($_GET['plan']) ? $_GET['plan'] : '';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var planSeleccionado = "<?= $planSeleccionado ?>";
-  if (planSeleccionado) {
-    // Selecciona automáticamente el radio del tipo de pago según el plan
+  // Si el plan es basico, premium o platinum, avanzar automáticamente al paso 2
+  if (['basico', 'premium', 'platinum'].includes(planSeleccionado.toLowerCase())) {
+    currentStep = 2;
+    showStep(currentStep);
+  } else if (planSeleccionado) {
+    // Si es otro tipo de pago, intenta seleccionar el radio y avanzar
     var radio = document.querySelector('input[name="tipo_pago"][value="' + capitalize(planSeleccionado) + '"]');
     if (radio) {
       radio.checked = true;
-      // Avanza automáticamente al paso 2 (no selecciona método de pago)
       currentStep = 2;
       showStep(currentStep);
     }

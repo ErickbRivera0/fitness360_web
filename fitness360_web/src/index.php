@@ -20,13 +20,6 @@ if (in_array($page, $allowed_pages)) {
     include "pages/$page.php";
 }
 
-if (isset($_GET['page'])) {
-    $page = $_GET['page'];
-    if ($page == 'historial_registros') {
-        include 'src/pages/historial_registros.php';
-    }
-    // ...otros includes...
-}
 
 if (!in_array($page, $public_pages)) {
     include 'includes/footer.php';

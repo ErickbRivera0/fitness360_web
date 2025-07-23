@@ -1,7 +1,7 @@
 <?php
-$host = 'switchback.proxy.rlwy.net';
+$host = 'switchback.proxy.rlwy.net';     // switchback.proxy.rlwy.net 
 $port = 16032;
-$db   = 'fitness360';
+$db   = 'railway';
 $user = 'root';
 $pass = 'JWjKAeEeGIkWRYzAdOmEhPqkFnUoKsKn'; // pon aquí la contraseña real
 $charset = 'utf8mb4';

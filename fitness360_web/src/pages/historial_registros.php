@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         (?, 'Pecho', ?, NOW(), ?),
         (?, 'Bíceps', ?, NOW(), ?)");
     $stmt->bind_param(
-        "idssidssidssidss",
+        "idsidsidsidsids",
         $idMiembro, $peso, $notas,
         $idMiembro, $cintura, $notas,
         $idMiembro, $cadera, $notas,

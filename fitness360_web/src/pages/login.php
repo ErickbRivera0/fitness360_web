@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_result($id, $hash, $rol);
     if ($stmt->fetch() && password_verify($password, $hash)) {
         $_SESSION['IDMiembro'] = $id;
-        $_SESSION['Rol'] = $rol; // <-- Guarda el rol en la sesión
+        $_SESSION['Rol'] = $rol; 
         header("Location: index.php?page=home");
         exit;
     } else {
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="login-wrapper">
   <div class="login-card">
     <div class="login-img-side">
-      <!-- Cambia la ruta de la imagen por tu logo o imagen de usuario -->
+   
       <img src="img/logo.png" alt="Logo">
       <h2>Fitness360</h2>
       <p>Bienvenido de nuevo</p>

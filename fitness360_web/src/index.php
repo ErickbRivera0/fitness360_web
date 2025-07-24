@@ -11,7 +11,7 @@ if (!isset($_SESSION['IDMiembro']) && !in_array($page, $public_pages)) {
 
 $allowed_pages = ['home', 'servicios', 'planes', 'contacto', 'miembros', 'registro', 'login', 'reservar', 'historial', 'pagos', 'logout', 'admin_pagos', 'historial_registros'];
 
-// Solo incluye header/footer si NO es login ni registro
+
 if (!in_array($page, $public_pages)) {
     include 'includes/header.php';
 }

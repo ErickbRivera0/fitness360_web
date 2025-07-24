@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<p class='success'>¡Clase reservada!</p>";
 }
 
-// Mostrar clases disponibles
 $result = $mysqli->query("SELECT IDClase, NombreClase, Horario FROM Clases");
 ?>
 

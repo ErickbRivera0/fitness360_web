@@ -8,7 +8,7 @@ require_once __DIR__ . '/../includes/conexion.php';
 $idMiembro = $_SESSION['IDMiembro'];
 $result = $mysqli->query("SELECT C.NombreClase, R.FechaHoraReserva FROM Reserva R JOIN Clases C ON R.IDClase = C.IDClase WHERE R.IDMiembro = $idMiembro ORDER BY R.FechaHoraReserva DESC");
 
-// Estilos mejorados
+
 echo "<style>
 .historial-container {
     max-width: 800px;

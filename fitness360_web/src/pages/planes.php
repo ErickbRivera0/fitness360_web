@@ -76,18 +76,17 @@ document.addEventListener('DOMContentLoaded', function() {
   const table = document.getElementById('tabla-planes');
   const btn = document.getElementById('btn-inscribirse');
 
-  // Selecciona la columna al hacer click en el encabezado
   table.querySelectorAll('th[data-plan]').forEach((th) => {
     th.addEventListener('click', function() {
-      // Quitar selección previa
+      
       table.querySelectorAll('th[data-plan], td[data-plan]').forEach(cell => {
         cell.classList.remove('selected-plan');
       });
-      // Seleccionar columna
+     
       const plan = th.getAttribute('data-plan');
       selectedPlan = plan;
       btn.disabled = false;
-      // Selecciona th y todos los td de esa columna
+      
       table.querySelectorAll('th[data-plan="'+plan+'"], td[data-plan="'+plan+'"]').forEach(cell => {
         cell.classList.add('selected-plan');
       });
@@ -96,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   btn.addEventListener('click', function() {
     if(selectedPlan) {
-      // Redirige a la página de pagos y luego a matrícula
+
       window.location.href = 'index.php?page=pagos&plan=' + selectedPlan + '&goto=matricula';
     }
   });

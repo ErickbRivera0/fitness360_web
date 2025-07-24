@@ -10,7 +10,7 @@ if (!isset($_SESSION['IDMiembro'])) {
 $idMiembro = $_SESSION['IDMiembro'];
 $mensaje = "";
 
-// Procesar formulario
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $peso = $_POST['peso'];
     $cintura = $_POST['cintura'];
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Mostrar formulario y registros
+
 echo "<style>
 .progreso-form-container {
     max-width: 500px;

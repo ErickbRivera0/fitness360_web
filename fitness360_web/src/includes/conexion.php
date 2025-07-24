@@ -3,19 +3,17 @@ $host = 'tramway.proxy.rlwy.net';
 $port = 41615;
 $db   = 'fitness360';
 $user = 'root';
-$pass = 'pzrbJzPSKtWnwWVdNEGyCKKGSqlYhMvR'; // pon aquí la contraseña real
+$pass = 'pzrbJzPSKtWnwWVdNEGyCKKGSqlYhMvR'; 
 $charset = 'utf8mb4';
 
-// Crear conexión mysqli
+
 $mysqli = new mysqli($host, $user, $pass, $db, $port);
 
-// Verificar conexión
+
 if ($mysqli->connect_errno) {
     die("Error de conexión: " . $mysqli->connect_error);
 }
 
-// Métodos CRUD para la tabla Miembros
-// Crear un miembro
 function crearMiembro($nombre, $correo, $telefono) {
     global $mysqli;
     $stmt = $mysqli->prepare("INSERT INTO Miembros (NombreCompleto, CorreoElectronico, NumeroTelefono) VALUES (?, ?, ?)");
@@ -24,7 +22,7 @@ function crearMiembro($nombre, $correo, $telefono) {
     $stmt->close();
 }
 
-// Leer todos los miembros
+
 function obtenerMiembros() {
     global $mysqli;
     $result = $mysqli->query("SELECT * FROM Miembros");
@@ -35,7 +33,7 @@ function obtenerMiembros() {
     return $miembros;
 }
 
-// Leer un miembro por ID
+
 function obtenerMiembroPorId($id) {
     global $mysqli;
     $stmt = $mysqli->prepare("SELECT * FROM Miembros WHERE IDMiembro = ?");
@@ -47,7 +45,7 @@ function obtenerMiembroPorId($id) {
     return $miembro;
 }
 
-// Actualizar un miembro
+
 function actualizarMiembro($id, $nombre, $correo, $telefono) {
     global $mysqli;
     $stmt = $mysqli->prepare("UPDATE Miembros SET NombreCompleto = ?, CorreoElectronico = ?, NumeroTelefono = ? WHERE IDMiembro = ?");
@@ -56,7 +54,7 @@ function actualizarMiembro($id, $nombre, $correo, $telefono) {
     $stmt->close();
 }
 
-// Eliminar un miembro
+
 function eliminarMiembro($id) {
     global $mysqli;
     $stmt = $mysqli->prepare("DELETE FROM Miembros WHERE IDMiembro = ?");

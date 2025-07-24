@@ -7,7 +7,7 @@ if (!isset($_SESSION['IDMiembro']) || !isset($_SESSION['Rol']) || $_SESSION['Rol
     exit;
 }
 
-// Eliminar pago
+
 if (isset($_GET['eliminar'])) {
     $idPago = intval($_GET['eliminar']);
     $mysqli->query("DELETE FROM Pagos WHERE IDPago = $idPago");
@@ -15,7 +15,7 @@ if (isset($_GET['eliminar'])) {
     exit;
 }
 
-// Editar pago
+
 $editarPago = null;
 if (isset($_GET['editar'])) {
     $idPago = intval($_GET['editar']);

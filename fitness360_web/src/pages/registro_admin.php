@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
-<!-- Aquí tu formulario bonito como antes -->
+
 <?php if ($isAdmin): ?>
   <li><a href="index.php?page=registro_admin">Registrar usuario (Admin)</a></li>
   <li><a href="index.php?page=historial_registros">Historial de registros</a></li>

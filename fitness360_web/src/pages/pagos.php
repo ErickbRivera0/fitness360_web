@@ -1,5 +1,5 @@
 <?php
-// session_start(); // <-- Elimina o comenta esta línea
+
 if (!isset($_SESSION['IDMiembro'])) {
     header("Location: index.php?page=login");
     exit;
@@ -9,7 +9,7 @@ require_once __DIR__ . '/../includes/conexion.php';
 $idMiembro = intval($_SESSION['IDMiembro']);
 $isAdmin = (isset($_SESSION['Rol']) && $_SESSION['Rol'] === 'admin');
 
-// --- ELIMINAR PAGO (solo admin) ---
+
 if ($isAdmin && isset($_GET['eliminar'])) {
     $idPago = intval($_GET['eliminar']);
     $mysqli->query("DELETE FROM Pagos WHERE IDPago = $idPago");
@@ -17,7 +17,7 @@ if ($isAdmin && isset($_GET['eliminar'])) {
     exit;
 }
 
-// --- EDITAR PAGO (solo admin) ---
+
 if ($isAdmin && isset($_POST['editar'])) {
     $idPago = intval($_POST['idpago']);
     $desc = $_POST['descripcion'];
@@ -36,7 +36,7 @@ if ($isAdmin && isset($_POST['editar'])) {
     exit;
 }
 
-// --- FORMULARIO DE EDICIÓN (solo admin) ---
+
 $editarPago = null;
 if ($isAdmin && isset($_GET['editar'])) {
     $idPago = intval($_GET['editar']);
@@ -178,7 +178,7 @@ body, .pagos-section, .pagos-form, .pagos-table, .wizard-container, .wizard-step
     .pagos-table th, .pagos-table td { padding: 10px 6px; }
 }
 
-/* Wizard grande y visual */
+
 .wizard-container {
   max-width: 800px;
   margin: 40px auto 32px auto;
@@ -225,12 +225,12 @@ body, .pagos-section, .pagos-form, .pagos-table, .wizard-container, .wizard-step
   flex-wrap: wrap;
 }
 .wizard-options label {
-  background: #fff; /* Fondo blanco */
+  background: #fff; 
   border-radius: 10px;
   padding: 22px 32px;
   font-size: 1.15rem;
   font-weight: 500;
-  color: #222; /* Texto oscuro */
+  color: #222;
   cursor: pointer;
   box-shadow: 0 1px 8px rgba(0,0,0,0.04);
   transition: background 0.2s, box-shadow 0.2s, color 0.2s;
@@ -241,7 +241,7 @@ body, .pagos-section, .pagos-form, .pagos-table, .wizard-container, .wizard-step
 .wizard-options input[type="radio"] { margin-right: 10px; }
 .wizard-options label:hover, .wizard-options input[type="radio"]:checked + span {
   background: #e0f7ef;
-  color: #007b55; /* Texto verde al seleccionar o hover */
+  color: #007b55; 
   box-shadow: 0 2px 12px rgba(0,123,85,0.08);
 }
 .next-btn, .back-btn {
@@ -253,17 +253,17 @@ body, .pagos-section, .pagos-form, .pagos-table, .wizard-container, .wizard-step
   margin: 8px 8px 0 0;
   transition: background 0.2s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  opacity: 1; /* Asegura que no haya transparencia */
+  opacity: 1; 
 }
 .next-btn {
-  background: #009e60; /* Verde sólido */
+  background: #009e60; 
   color: #fff;
 }
 .next-btn:hover {
   background: #007b48;
 }
 .back-btn {
-  background: #bdbdbd; /* Gris más oscuro */
+  background: #bdbdbd; 
   color: #222;
 }
 .back-btn:hover {
@@ -292,7 +292,6 @@ input[type="text"], input[type="number"] {
 </style>
 
 
-<!-- Wizard de Pagos -->
 <div class="wizard-container">
   <div class="wizard-steps">
     <div class="step" id="step-ind-1">1</div>
@@ -302,7 +301,7 @@ input[type="text"], input[type="number"] {
     <div class="step" id="step-ind-3">3</div>
   </div>
   <form id="pagosWizardForm" method="post" action="">
-    <!-- Paso 1 -->
+    
     <div class="wizard-step" id="step1">
       <h3 style="color:black; text-align:center;">Seleccionar el tipo de pago</h3>
       <div class="wizard-options">
@@ -320,7 +319,7 @@ input[type="text"], input[type="number"] {
         <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
       </div>
     </div>
-    <!-- Paso 2 -->
+   
     <div class="wizard-step" id="step2" style="display:none;">
       <h3>Pasarela de Pago</h3>
       <div class="wizard-options">
@@ -333,7 +332,7 @@ input[type="text"], input[type="number"] {
         <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
       </div>
     </div>
-    <!-- Paso 3 -->
+  
     <div class="wizard-step" id="step3" style="display:none;">
       <h3 style="color:black;">Información de pago</h3>
       <div id="tarjetaFields" style="display:none;">
@@ -396,7 +395,7 @@ function showStep(step) {
     if (idx+1 < step) el.classList.add('completed');
     else if (idx+1 === step) el.classList.add('active');
   });
-  // Mostrar campos de tarjeta solo si corresponde
+  
   if (step === 3) {
     const proveedor = document.querySelector('input[name="proveedor"]:checked');
     document.getElementById('tarjetaFields').style.display = (proveedor && proveedor.value === 'Tarjeta') ? 'block' : 'none';
@@ -429,25 +428,25 @@ function irAPago() {
 </script>
 
 <script>
-// Formatear número de tarjeta y reflejar en la tarjeta visual
+
 const tarjetaInput = document.getElementById('tarjetaInput');
 const cardNumberPreview = document.getElementById('cardNumberPreview');
 tarjetaInput.addEventListener('input', function(e) {
-  let value = e.target.value.replace(/\D/g, '').slice(0,16); // Cambia a 15 si quieres solo Amex, o 16 para Visa/Mastercard
+  let value = e.target.value.replace(/\D/g, '').slice(0,16); 
   if (value.length === 15) {
-    // Formato Amex: 4-6-5
+
     value = value.replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, function(_, g1, g2, g3) {
       return [g1, g2, g3].filter(Boolean).join(' ');
     });
   } else {
-    // Formato estándar: 4-4-4-4
+    
     value = value.replace(/(.{4})/g, '$1 ').trim();
   }
   e.target.value = value;
   cardNumberPreview.textContent = value.padEnd(19, '•');
 });
 
-// Reflejar nombre en la tarjeta
+
 const nombreTarjetaInput = document.getElementById('nombreTarjetaInput');
 const cardNamePreview = document.getElementById('cardNamePreview');
 nombreTarjetaInput.addEventListener('input', function(e) {
@@ -455,7 +454,7 @@ nombreTarjetaInput.addEventListener('input', function(e) {
   cardNamePreview.textContent = value || 'SU NOMBRE AQUÍ';
 });
 
-// Corregir el campo de mes/año a formato MM/AA
+
 const expInput = document.getElementById('expInput');
 const cardExpPreview = document.getElementById('cardExpPreview');
 expInput.addEventListener('input', function(e) {
@@ -468,7 +467,7 @@ expInput.addEventListener('input', function(e) {
   cardExpPreview.textContent = value || 'MM/AA';
 });
 
-// Limitar CVV a 4 dígitos numéricos
+
 const cvvInput = document.getElementById('cvvInput');
 cvvInput.addEventListener('input', function(e) {
   e.target.value = e.target.value.replace(/\D/g, '').slice(0,4);
@@ -476,7 +475,7 @@ cvvInput.addEventListener('input', function(e) {
 </script>
 
 <?php
-// --- Lógica de inserción de pago ---
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset($_POST['proveedor'])) {
     $tipo_pago = $_POST['tipo_pago'];
     $proveedor = $_POST['proveedor'];
@@ -485,16 +484,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     $cvv = $_POST['cvv'] ?? null;
     $nombre_tarjeta = $_POST['nombre_tarjeta'] ?? null;
 
-    // Aquí tu lógica para calcular monto, descuentos, etc.
+  
     if ($proveedor === "Efectivo") {
         $monto = isset($_POST['monto_efectivo']) ? floatval($_POST['monto_efectivo']) : 0;
     } elseif ($proveedor === "Transferencia") {
         $monto = isset($_POST['monto_transferencia']) ? floatval($_POST['monto_transferencia']) : 0;
     } else {
-        $monto = 1000; // o el valor por defecto/tarjeta
+        $monto = 1000; 
     }
 
-    // Estado y transacción automáticos
     if ($proveedor === "Efectivo") {
         $estado = "Aprobado";
     } elseif ($proveedor === "Tarjeta") {
@@ -505,7 +503,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     $idTrans = strval(rand(100000000, 999999999));
     $fecha = date('Y-m-d');
 
-    // Inserta en la base de datos
+   
     $stmt = $mysqli->prepare("INSERT INTO Pagos (IDMiembro, DescripcionPago, Monto, FechaPago, MetodoPago, EstadoPago, IDTransaccion) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("isdssss", $idMiembro, $tipo_pago, $monto, $fecha, $proveedor, $estado, $idTrans);
     $stmt->execute();
@@ -515,13 +513,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     exit;
 }
 
-// --- Lógica de redirección y procesamiento ---
 if ($isAdmin && isset($_GET['eliminar'])) {
-    // ...
+    
     header("Location: index.php?page=pagos");
     exit;
 }
-// ...más lógica que use header()...
+
 
 require_once __DIR__ . '/../includes/header.php'; ?>
 
@@ -535,7 +532,7 @@ require_once __DIR__ . '/../includes/header.php'; ?>
   </div>
 
   <?php if ($editarPago): ?>
-    <!-- Formulario de edición de pago -->
+   
     <h2>Editar Pago</h2>
     <form method="post" class="pagos-form">
       <input type="hidden" name="idpago" value="<?= $editarPago['IDPago'] ?>">
@@ -569,7 +566,7 @@ require_once __DIR__ . '/../includes/header.php'; ?>
     <hr>
   <?php endif; ?>
 
-  <!-- Historial de pagos -->
+ 
   <h2>Historial de Pagos</h2>
   <table class="pagos-table">
     <tr>
@@ -623,12 +620,12 @@ $planSeleccionado = isset($_GET['plan']) ? $_GET['plan'] : '';
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   var planSeleccionado = "<?= $planSeleccionado ?>";
-  // Si el plan es basico, premium o platinum, avanzar automáticamente al paso 2
+
   if (['basico', 'premium', 'platinum'].includes(planSeleccionado.toLowerCase())) {
     currentStep = 2;
     showStep(currentStep);
   } else if (planSeleccionado) {
-    // Si es otro tipo de pago, intenta seleccionar el radio y avanzar
+
     var radio = document.querySelector('input[name="tipo_pago"][value="' + capitalize(planSeleccionado) + '"]');
     if (radio) {
       radio.checked = true;

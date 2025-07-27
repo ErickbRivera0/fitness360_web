@@ -1,9 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/conexion.php';
-if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] !== 'admin') {
-    header("Location: index.php?page=home");
-    exit;
-}
+
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$page = $_GET['page'] ?? 'login'; // Por defecto, carga 'login' test git
+$page = $_GET['page'] ?? 'login'; 
 $public_pages = ['login', 'registro'];
 
 if (!isset($_SESSION['IDMiembro']) && !in_array($page, $public_pages)) {
@@ -9,7 +9,10 @@ if (!isset($_SESSION['IDMiembro']) && !in_array($page, $public_pages)) {
     exit;
 }
 
-$allowed_pages = ['home', 'servicios', 'planes', 'contacto', 'miembros', 'registro', 'login', 'reservar', 'historial', 'pagos', 'logout', 'admin_pagos', 'historial_registros'];
+$allowed_pages = [
+    'home', 'servicios', 'planes', 'contacto', 'maquinaria', 'miembros', 'registro', 'login',
+    'reservar', 'historial', 'pagos', 'logout', 'admin_pagos', 'historial_registros'
+];
 
 // Solo incluye header/footer si NO es login ni registro
 if (!in_array($page, $public_pages)) {

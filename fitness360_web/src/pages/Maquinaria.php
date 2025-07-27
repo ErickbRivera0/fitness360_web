@@ -1,3 +1,38 @@
+<?php
+// Conexión a la base de datos (Railway)
+$host = 'tramway.proxy.rlwy.net';
+$port = 41615;
+$db   = 'fitness360';
+$user = 'root';
+$pass = 'pzrbJzPSKtWnwWVdNEGyCKKGSqlYhMvR';
+$charset = 'utf8mb4';
+
+$conn = new mysqli($host, $user, $pass, $db, $port);
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Procesar el formulario
+$mensaje = "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $serie = $_POST["serie"];
+    $estado = $_POST["estado"];
+    $descripcion = $_POST["descripcion"];
+    $caracteristicas = $_POST["caracteristicas"];
+
+    $sql = "INSERT INTO Maquinaria (serie, estado, descripcion, caracteristicas) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss", $serie, $estado, $descripcion, $caracteristicas);
+
+    if ($stmt->execute()) {
+        $mensaje = "¡Maquinaria registrada correctamente!";
+    } else {
+        $mensaje = "Error al registrar: " . $conn->error;
+    }
+    $stmt->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,10 +68,16 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .mensaje {
+            text-align: center;
+            margin-bottom: 16px;
+            color: green;
+        }
     </style>
 </head>
 <body>
     <h2 style="text-align:center;">Agregar Maquinaria</h2>
+    <?php if ($mensaje) echo "<div class='mensaje'>$mensaje</div>"; ?>
     <form method="POST" action="">
         <label for="serie">Serie de la máquina:</label>
         <input type="text" name="serie" id="serie" required>

@@ -5,27 +5,32 @@ if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] !== 'admin') {
     exit;
 }
 ?>
-<style>
-.miembros-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #fff;
-}
-.miembros-table th, .miembros-table td {
-    border: 1px solid #ddd;
-    padding: 12px 8px;
-    font-weight: bold;
-    color: #222;
-    background: #fff;
-}
-.miembros-table th {
-    background: #f5f5f5;
-    color: #222;
-}
-.miembros-table tr:hover {
-    background-color: #e9ecef;
-}
-</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    .miembros-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+    }
+    .miembros-table th, .miembros-table td {
+        border: 1px solid #ddd;
+        padding: 12px 8px;
+        font-weight: bold;
+        color: #222;
+        background: #fff;
+    }
+    .miembros-table th {
+        background: #f5f5f5;
+        color: #222;
+    }
+    .miembros-table tr:hover {
+        background-color: #e9ecef;
+    }
+    </style>
+</head>
+<body>
 
 <h2>Miembros</h2>
 <table class="miembros-table">
@@ -49,3 +54,6 @@ if (!isset($_SESSION['Rol']) || $_SESSION['Rol'] !== 'admin') {
         ?>
     </tbody>
 </table>
+
+</body>
+</html>

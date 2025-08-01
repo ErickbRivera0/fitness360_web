@@ -11,7 +11,8 @@ if (!isset($_SESSION['IDMiembro']) && !in_array($page, $public_pages)) {
 
 $allowed_pages = [
     'home', 'servicios', 'planes', 'contacto', 'maquinaria', 'miembros', 'registro', 'login',
-    'reservar', 'historial', 'pagos', 'logout', 'admin_pagos', 'historial_registros'
+    'reservar', 'historial', 'pagos', 'logout', 'admin_pagos', 'historial_registros', 'factura',
+    'generar_factura_tcpdf'
 ];
 
 

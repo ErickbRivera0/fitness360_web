@@ -1,5 +1,8 @@
 <?php
 
+$pagoExitoso = false;
+$idFactura = null;
+
 if (!isset($_SESSION['IDMiembro'])) {
     header("Location: index.php?page=login");
     exit;
@@ -289,100 +292,41 @@ input[type="text"], input[type="number"] {
   .wizard-options { gap: 12px; }
   .card-preview { width: 98vw; max-width: 320px; }
 }
+.mensaje-exito {
+  max-width: 600px;
+  margin: 60px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  padding: 40px;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+}
+.mensaje-exito h2 {
+  color: #28a745;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+.mensaje-exito p {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+.btn-ver-factura {
+  background-color: #007bff;
+  color: #fff;
+  padding: 12px 28px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+.btn-ver-factura:hover {
+  background-color: #0056b3;
+}
 </style>
-
-
-<div class="wizard-container">
-  <div class="wizard-steps">
-    <div class="step" id="step-ind-1">1</div>
-    <div class="step-line"></div>
-    <div class="step" id="step-ind-2">2</div>
-    <div class="step-line"></div>
-    <div class="step" id="step-ind-3">3</div>
-  </div>
-  <form id="pagosWizardForm" method="post" action="">
-    
-    <div class="wizard-step" id="step1">
-      <h3 style="color:black; text-align:center;">Seleccionar el tipo de pago</h3>
-      <div class="wizard-options">
-        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
-          <input type="radio" name="tipo_pago" value="Matrícula" required> Matrícula
-        </label>
-        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
-          <input type="radio" name="tipo_pago" value="Cuotas"> Cuotas</label>
-        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
-        <input type="radio" name="tipo_pago" value="Reserva"> Reserva</label>
-        <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
-        <input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
-      </div>
-      <div style="text-align:center; margin-top:32px;">
-        <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
-      </div>
-    </div>
-   
-    <div class="wizard-step" id="step2" style="display:none;">
-      <h3>Pasarela de Pago</h3>
-      <div class="wizard-options">
-        <label><input type="radio" name="proveedor" value="Tarjeta" required> <span class="bank-logo visa"></span> Tarjeta (Visa/Mastercard)</label>
-        <label><input type="radio" name="proveedor" value="Efectivo"> <span class="bank-logo cash"></span> Efectivo</label>
-        <label><input type="radio" name="proveedor" value="Transferencia"> <span class="bank-logo transfer"></span> Transferencia</label>
-      </div>
-      <div style="margin-top:32px;">
-        <button type="button" class="back-btn" onclick="prevStep()">Atrás</button>
-        <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
-      </div>
-    </div>
-  
-    <div class="wizard-step" id="step3" style="display:none;">
-      <h3 style="color:black;">Información de pago</h3>
-      <div id="tarjetaFields" style="display:none;">
-        <div class="card-preview" id="cardPreview">
-          <div class="chip"></div>
-          <div class="card-number" id="cardNumberPreview">•••• •••• •••• ••••</div>
-          <div class="card-name" id="cardNamePreview">SU NOMBRE AQUÍ</div>
-          <div class="card-exp" id="cardExpPreview">MM/AA</div>
-          <div style="position:absolute; top:18px; right:24px;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style="height:24px;vertical-align:middle;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" style="height:24px;vertical-align:middle;">
-          </div>
-        </div>
-        <label>Número de tarjeta
-          <input type="text" name="tarjeta" id="tarjetaInput" maxlength="19" placeholder="•••• •••• •••• ••••" autocomplete="cc-number" inputmode="numeric" pattern="(\d{4} ?){3}\d{4}|\d{4} ?\d{6} ?\d{5}">
-        </label>
-        <label>Fecha Expiración
-          <input type="text" name="exp" id="expInput" maxlength="5" placeholder="MM/AA" autocomplete="cc-exp" pattern="^(0[1-9]|1[0-2])\/\d{2}$">
-        </label>
-        <label>CVV
-          <input type="text" name="cvv" id="cvvInput" maxlength="4" placeholder="123" autocomplete="cc-csc" inputmode="numeric" pattern="\d{3,4}">
-        </label>
-        <label>Nombre en la tarjeta
-          <input type="text" name="nombre_tarjeta" id="nombreTarjetaInput" maxlength="26" autocomplete="cc-name">
-        </label>
-      </div>
-      <div id="efectivoFields" style="display:none;">
-        <label>Monto a pagar (Efectivo)
-          <input type="number" name="monto_efectivo" min="1" step="0.01" placeholder="Ingrese el monto">
-        </label>
-      </div>
-      <div id="transferenciaFields" style="display:none;">
-        <label>Monto a transferir
-          <input type="number" name="monto_transferencia" min="1" step="0.01" placeholder="Ingrese el monto">
-        </label>
-        <div style="margin-top:10px;">
-          <strong>Datos para transferencia:</strong>
-          <div>Banco: Banco Atlantida</div>
-          <div>Cuenta: 7521425414</div>
-          <div>Nombre: Fitness360</div>
-          <div>Referencia: <?= htmlspecialchars($_SESSION['NombreCompleto'] ?? 'Tu nombre') ?></div>
-        </div>
-      </div>
-      <div style="margin-top:32px;">
-        <button type="button" class="back-btn" onclick="prevStep()">Atrás</button>
-        <button type="submit" class="next-btn">Pagar</button>
-      </div>
-    </div>
-  </form>
-</div>
 
 <script>
 let currentStep = 1;
@@ -429,49 +373,67 @@ function irAPago() {
 
 <script>
 
-const tarjetaInput = document.getElementById('tarjetaInput');
-const cardNumberPreview = document.getElementById('cardNumberPreview');
-tarjetaInput.addEventListener('input', function(e) {
-  let value = e.target.value.replace(/\D/g, '').slice(0,16); 
-  if (value.length === 15) {
+document.addEventListener('DOMContentLoaded', function () {
+  const tarjetaInput = document.getElementById('tarjetaInput');
+  const cardNumberPreview = document.getElementById('cardNumberPreview');
 
-    value = value.replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, function(_, g1, g2, g3) {
-      return [g1, g2, g3].filter(Boolean).join(' ');
-    });
-  } else {
-    
-    value = value.replace(/(.{4})/g, '$1 ').trim();
-  }
-  e.target.value = value;
-  cardNumberPreview.textContent = value.padEnd(19, '•');
+  tarjetaInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '').slice(0, 16); 
+
+    if (value.length === 15) {
+      value = value.replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*/, function(_, g1, g2, g3) {
+        return [g1, g2, g3].filter(Boolean).join(' ');
+      });
+    } else {
+      value = value.replace(/(.{4})/g, '$1 ').trim();
+    }
+
+    e.target.value = value;
+    cardNumberPreview.textContent = value.padEnd(19, '•');
+  });
 });
 
 
-const nombreTarjetaInput = document.getElementById('nombreTarjetaInput');
-const cardNamePreview = document.getElementById('cardNamePreview');
-nombreTarjetaInput.addEventListener('input', function(e) {
-  let value = e.target.value.toUpperCase();
-  cardNamePreview.textContent = value || 'SU NOMBRE AQUÍ';
+document.addEventListener('DOMContentLoaded', function() {
+  const nombreTarjetaInput = document.getElementById('nombreTarjetaInput');
+  const cardNamePreview = document.getElementById('cardNamePreview');
+
+  nombreTarjetaInput.addEventListener('input', function(e) {
+    const value = e.target.value.trim().toUpperCase();
+    cardNamePreview.textContent = value || 'SU NOMBRE AQUÍ';
+  });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  const expInput = document.getElementById('expInput');
+  const cardExpPreview = document.getElementById('cardExpPreview');
 
-const expInput = document.getElementById('expInput');
-const cardExpPreview = document.getElementById('cardExpPreview');
-expInput.addEventListener('input', function(e) {
-  let value = e.target.value.replace(/\D/g, '');
-  if (value.length > 4) value = value.slice(0,4);
-  if (value.length >= 3) {
-    value = value.slice(0,2) + '/' + value.slice(2,4);
-  }
-  e.target.value = value;
-  cardExpPreview.textContent = value || 'MM/AA';
+  expInput.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, '').slice(0, 4); // Solo números
+
+    if (value.length >= 3) {
+      let mes = value.slice(0, 2);
+      let anio = value.slice(2, 4);
+
+      // Validar el mes
+      if (parseInt(mes) > 12) mes = '12';
+      if (parseInt(mes) < 1 && mes !== '') mes = '01';
+
+      value = mes + '/' + anio;
+    }
+
+    e.target.value = value;
+    cardExpPreview.textContent = value || 'MM/AA';
+  });
 });
 
-
-const cvvInput = document.getElementById('cvvInput');
-cvvInput.addEventListener('input', function(e) {
-  e.target.value = e.target.value.replace(/\D/g, '').slice(0,4);
+document.addEventListener('DOMContentLoaded', function() {
+  const cvvInput = document.getElementById('cvvInput');
+  cvvInput.addEventListener('input', function(e) {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+  });
 });
+
 </script>
 
 <?php
@@ -503,24 +465,139 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tipo_pago']) && isset
     $idTrans = strval(rand(100000000, 999999999));
     $fecha = date('Y-m-d');
 
-   
     $stmt = $mysqli->prepare("INSERT INTO Pagos (IDMiembro, DescripcionPago, Monto, FechaPago, MetodoPago, EstadoPago, IDTransaccion) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("isdssss", $idMiembro, $tipo_pago, $monto, $fecha, $proveedor, $estado, $idTrans);
     $stmt->execute();
+
+    $idPago = $stmt->insert_id;
     $stmt->close();
 
-    header('Location: index.php?page=pagos&exito=1');
-    exit;
-}
+    // Crear la factura después del pago
+    $numeroFactura = uniqid('F-'); // Puedes personalizarlo
+    $fechaEmision = date('Y-m-d');
+    $total = $monto;
 
-if ($isAdmin && isset($_GET['eliminar'])) {
-    
-    header("Location: index.php?page=pagos");
-    exit;
-}
+    $stmt = $mysqli->prepare("INSERT INTO Facturas (NumeroFactura, FechaEmision, Total, IDPago) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssdi", $numeroFactura, $fechaEmision, $total, $idPago);
+    $stmt->execute();
+    $idFactura = $stmt->insert_id;
+    $stmt->close();
 
+    $pagoExitoso = true;
+
+    // Mostrar un mensaje de éxito y el botón de ver factura
+    /*echo "<div style='text-align:center; padding:20px;'>";
+    echo "<h3>¡Pago realizado con éxito!</h3>";
+    echo "<a href='index.php?page=factura&id_factura=" . $idFactura . "'>";
+    echo "<button style='padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px;'>Ver factura</button>";
+    echo "</a>";
+    echo "</div>";
+    exit;  // Detener ejecución después de mostrar el mensaje*/
+
+}
 
 require_once __DIR__ . '/../includes/header.php'; ?>
+
+
+<div class="wizard-container">
+  <?php if ($pagoExitoso): ?>
+    <div class="mensaje-exito">
+      <h2>¡Pago realizado con éxito!</h2>
+      <p>Tu pago ha sido registrado correctamente. Puedes ver tu factura haciendo clic en el botón abajo.</p>
+      <a href="index.php?page=factura&id_factura=<?= htmlspecialchars($idFactura) ?>" class="btn-ver-factura">Ver factura</a>
+    </div>
+  <?php else: ?>
+    <div class="wizard-steps">
+      <div class="step" id="step-ind-1">1</div>
+      <div class="step-line"></div>
+      <div class="step" id="step-ind-2">2</div>
+      <div class="step-line"></div>
+      <div class="step" id="step-ind-3">3</div>
+    </div>   
+
+    <form id="pagosWizardForm" method="post" action="">
+      <div class="wizard-step" id="step1">
+        <h3 style="color:black; text-align:center;">Seleccionar el tipo de pago</h3>
+        <div class="wizard-options">
+          <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+            <input type="radio" name="tipo_pago" value="Matrícula" required> Matrícula
+          </label>
+          <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+            <input type="radio" name="tipo_pago" value="Cuotas"> Cuotas</label>
+          <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+          <input type="radio" name="tipo_pago" value="Reserva"> Reserva</label>
+          <label style="border:2px solid #009e60; border-radius:10px; padding:8px 18px; margin-right:12px; display:inline-block;">
+          <input type="radio" name="tipo_pago" value="Entrenador"> Entrenador</label>
+        </div>
+        <div style="text-align:center; margin-top:32px;">
+          <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
+        </div>
+      </div>
+    
+      <div class="wizard-step" id="step2" style="display:none;">
+        <h3>Pasarela de Pago</h3>
+        <div class="wizard-options">
+          <label><input type="radio" name="proveedor" value="Tarjeta" required> <span class="bank-logo visa"></span> Tarjeta (Visa/Mastercard)</label>
+          <label><input type="radio" name="proveedor" value="Efectivo"> <span class="bank-logo cash"></span> Efectivo</label>
+          <label><input type="radio" name="proveedor" value="Transferencia"> <span class="bank-logo transfer"></span> Transferencia</label>
+        </div>
+        <div style="margin-top:32px;">
+          <button type="button" class="back-btn" onclick="prevStep()">Atrás</button>
+          <button type="button" class="next-btn" onclick="nextStep()">Continuar</button>
+        </div>
+      </div>
+    
+      <div class="wizard-step" id="step3" style="display:none;">
+        <h3 style="color:black;">Información de pago</h3>
+        <div id="tarjetaFields" style="display:none;">
+          <div class="card-preview" id="cardPreview">
+            <div class="chip"></div>
+            <div class="card-number" id="cardNumberPreview">•••• •••• •••• ••••</div>
+            <div class="card-name" id="cardNamePreview">SU NOMBRE AQUÍ</div>
+            <div class="card-exp" id="cardExpPreview">MM/AA</div>
+            <div style="position:absolute; top:18px; right:24px;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" style="height:24px;vertical-align:middle;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="Mastercard" style="height:24px;vertical-align:middle;">
+            </div>
+          </div>
+          <label>Número de tarjeta
+            <input type="text" name="tarjeta" id="tarjetaInput" maxlength="19" placeholder="•••• •••• •••• ••••" autocomplete="cc-number" inputmode="numeric" maxlength="23" pattern="^(\d{4} \d{4} \d{4} \d{4}|\d{4} \d{6} \d{5})$">
+          </label>
+          <label>Fecha Expiración
+            <input type="text" name="exp" id="expInput" maxlength="5" placeholder="MM/AA" autocomplete="cc-exp" pattern="^(0[1-9]|1[0-2])\/\d{2}$">
+          </label>
+          <label>CVV
+            <input type="text" id="cvvInput" maxlength="4" placeholder="123" autocomplete="cc-csc" inputmode="numeric">
+          </label>
+          <label>Nombre en la tarjeta
+            <input type="text" name="nombre_tarjeta" id="nombreTarjetaInput" maxlength="26" autocomplete="cc-name" laceholder="Nombre como aparece en la tarjeta">
+          </label>
+        </div>
+        <div id="efectivoFields" style="display:none;">
+          <label>Monto a pagar (Efectivo)
+            <input type="number" name="monto_efectivo" min="1" step="0.01" placeholder="Ingrese el monto">
+          </label>
+        </div>
+        <div id="transferenciaFields" style="display:none;">
+          <label>Monto a transferir
+            <input type="number" name="monto_transferencia" min="1" step="0.01" placeholder="Ingrese el monto">
+          </label>
+          <div style="margin-top:10px;">
+            <strong>Datos para transferencia:</strong>
+            <div>Banco: Banco Atlantida</div>
+            <div>Cuenta: 7521425414</div>
+            <div>Nombre: Fitness360</div>
+            <div>Referencia: <?= htmlspecialchars($_SESSION['NombreCompleto'] ?? 'Tu nombre') ?></div>
+          </div>
+        </div>
+        <div style="margin-top:32px;">
+          <button type="button" class="back-btn" onclick="prevStep()">Atrás</button>
+          <button type="submit" class="next-btn">Pagar</button>
+        </div>
+      </div>
+    </form>
+    <?php endif; ?>
+  </div>
 
 <?php if ($isAdmin): ?>
   <div style="background:#e0f7ef; border:2px solid #007b55; border-radius:10px; padding:24px; margin:32px 0;">
@@ -640,3 +717,5 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+

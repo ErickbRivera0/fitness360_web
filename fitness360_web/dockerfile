@@ -7,3 +7,5 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mys
 COPY ./src/ /var/www/html/
 
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
+RUN composer require dompdf/dompdf

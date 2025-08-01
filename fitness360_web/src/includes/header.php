@@ -38,7 +38,6 @@ if (isset($_SESSION['IDMiembro'])) {
         <?php endif; ?>
         <li><a href="index.php?page=reservar">Reservar</a></li>
         <li><a href="index.php?page=historial">Asistencias</a></li>
-        <li><a href="index.php?page=factura">Factura</a></li>
         <li><a href="index.php?page=pagos">Pagos</a></li>
         <?php if (!isset($_SESSION['IDMiembro'])): ?>
           <li><a href="index.php?page=registro">Registro</a></li>

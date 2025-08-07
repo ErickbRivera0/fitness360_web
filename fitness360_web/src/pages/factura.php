@@ -4,7 +4,7 @@
 if (isset($_GET['id_factura'])) {
     $idFactura = intval($_GET['id_factura']);
 
-    // Obtener los datos de la factura, pago y miembro desde la base de datos.
+    // Obtener los datos de la factura, pago y miembro desde la base de datos..
     $stmt = $mysqli->prepare("
         SELECT 
             f.IDFactura, 

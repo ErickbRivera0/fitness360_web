@@ -1,11 +1,17 @@
-FROM php:8.2-apache
+FROM php:8.1-apache
 
-RUN a2enmod rewrite 
+# Instala dependencias necesarias y la extensión mysqli
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    unzip \
+    && docker-php-ext-install zip mysqli
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY ./src/ /var/www/html/
+# Copia el código fuente
+COPY ./src /var/www/html
 
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
-
+# Instala dompdf
+WORKDIR /var/www/html
 RUN composer require dompdf/dompdf
